@@ -1,208 +1,667 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://kit.fontawesome.com/edbe15ff95.js" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sonam Dolker Portfolio</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Roboto"', 'sans-serif'],
+          body: ['"Roboto"', 'sans-serif'],
+          mono: ['"Roboto Mono"', 'monospace'],
+        },
+        colors: {
+          ink:    '#202124',
+          soft:   '#5F6368',
+          line:   '#DADCE0',
+          shell:  '#FFFFFF',
+          panel:  '#F8F9FA',
+          gblue:  '#1A73E8',
+          gblueDark: '#174EA6',
+          gred:   '#EA4335',
+          gyellow:'#FBBC04',
+          ggreen: '#34A853',
+        },
+      },
+    },
+  }
+</script>
+
+<style>
+  html { -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Roboto', sans-serif; background: #FFFFFF; }
+
+  /* ---- scroll reveal ---- */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---- horizontal work strip ---- */
+  .strip { scrollbar-width: none; -ms-overflow-style: none; cursor: grab; }
+  .strip::-webkit-scrollbar { display: none; }
+  .strip.dragging { cursor: grabbing; scroll-behavior: auto !important; }
+  .strip.dragging * { pointer-events: none; }
+
+  /* ---- media hover ---- */
+  .media img { transition: transform 1.1s cubic-bezier(.22,1,.36,1); }
+  .media:hover img { transform: scale(1.05); }
+  .media .badge { transition: opacity .4s ease, transform .5s cubic-bezier(.22,1,.36,1); }
+
+  /* ---- material elevation ---- */
+  .elev-1 { box-shadow: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15); }
+  .elev-2 { box-shadow: 0 1px 3px rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.12); }
+  .elev-1, .elev-2 { transition: box-shadow .25s ease, transform .25s ease; }
+  .elev-1:hover, .elev-2:hover { box-shadow: 0 2px 4px rgba(60,64,67,.3), 0 6px 14px 4px rgba(60,64,67,.16); }
+
+  
+  .dotmark { display: inline-grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
+  .dotmark span { width: 9px; height: 9px; border-radius: 9999px; display: block; }
+  .dotmark span:nth-child(1){ background:#4285F4; }
+  .dotmark span:nth-child(2){ background:#EA4335; }
+  .dotmark span:nth-child(3){ background:#FBBC04; }
+  .dotmark span:nth-child(4){ background:#34A853; }
+
+  /* ---- material chip ---- */
+  .chip { display:inline-flex; align-items:center; gap:8px; }
+  .chip .dot { width:8px; height:8px; border-radius:9999px; flex-shrink:0; }
+
+  /* ---- experience accordion ---- */
+  .exp-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s cubic-bezier(.22,1,.36,1), opacity .4s ease; opacity: 0; }
+  .exp.open .exp-body { grid-template-rows: 1fr; opacity: 1; }
+  .exp-body > div { overflow: hidden; }
+  .exp.open .exp-head { color: #1A73E8; }
+
+  /* ---- vertical labels ---- */
+  .vertical { writing-mode: vertical-rl; text-orientation: mixed; }
+
+  a:focus-visible, button:focus-visible { outline: 2px solid #1A73E8; outline-offset: 3px; border-radius: 2px; }
+
+  .btn-fill {
+    background: #1A73E8; color: #fff; border-radius: 9999px; padding: 10px 22px;
+    font-size: 13px; font-weight: 500; display: inline-flex; align-items:center; gap:8px;
+    transition: background .2s ease, box-shadow .2s ease;
+  }
+  .btn-fill:hover { background: #174EA6; box-shadow: 0 1px 3px rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
 </head>
 
-<body>
-    <header class="header">
-        <a href="#" class="logo">Sonam <span>Dolker</span></a>
-        <i class="fa-solid fa-bars" id="menu-icon"></i>
+<body class="font-body text-ink">
 
-        <nav class="navbar">
-            <a href="#" class="active" id="active">Home</a>
-            <a href="#education" id="education">Education</a>
-            <a href="#project" id="project">Projects</a>
-            <a href="#contact" id="contact">Contact</a>
-        </nav>
-    </header>
+<div class="mx-auto w-full max-w-[1580px] bg-white">
 
-    <section class="home" id="home">
-        <div class="home-content">
-            <h1>Hi, It's <span>Sonam</span></h1>
-            <h3 class="text-animation">I'm a <span></span> </h3>
-            <p>I'm a second-year student at IIIT Bhopal, currently diving into the world of web development and competitive programming. I have a growing passion for building efficient, user-friendly web applications, and I'm continuously honing my coding skills through various projects and challenges.</p>
-            <div class="social-media">
-                <a href="https://www.linkedin.com/in/sonam-dolker-135504271/"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://github.com/dolkersonam"><i class="fa-brands fa-github"></i></a>
-            </div>
+  <!-- ============ NAV ============ -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-line/70">
+    <nav class="flex items-center justify-between px-5 sm:px-8 lg:px-12 h-16">
+      <a href="#top" class="flex items-center gap-3" aria-label="Sonam Dolker — home">
+        <span class="dotmark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      </a>
+
+      <ul class="hidden md:flex items-center gap-8 text-[13px] text-soft font-medium">
+        <li><a href="#about"      class="hover:text-gblue transition-colors">About</a></li>
+        <li><a href="#work"       class="hover:text-gblue transition-colors">Work</a></li>
+        <li><a href="#experience" class="hover:text-gblue transition-colors">Experience</a></li>
+        <li><a href="#stack"      class="hover:text-gblue transition-colors">Stack</a></li>
+      </ul>
+
+      <a href="#contact" class="hidden md:inline-flex btn-fill">
+        Get in touch <span class="text-[11px]">↗</span>
+      </a>
+
+      <button id="menuBtn" class="md:hidden w-9 h-9 grid place-items-center" aria-label="Open menu" aria-expanded="false">
+        <span class="block w-5 space-y-1.5">
+          <span class="block h-[2px] rounded-full bg-ink"></span>
+          <span class="block h-[2px] rounded-full bg-ink"></span>
+        </span>
+      </button>
+    </nav>
+
+    <div id="mobileMenu" class="md:hidden hidden border-t border-line px-5 py-5 space-y-4 text-sm bg-white">
+      <a href="#about" class="block">About</a>
+      <a href="#work" class="block">Work</a>
+      <a href="#experience" class="block">Experience</a>
+      <a href="#stack" class="block">Stack</a>
+      <a href="#contact" class="btn-fill inline-flex">Get in touch ↗</a>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative px-5 sm:px-8 lg:px-12 pt-10 pb-6">
+    <div class="grid lg:grid-cols-[1fr_minmax(0,760px)] gap-8 items-end">
+      <div class="relative">
+        <!-- vertical rail -->
+        <div class="hidden lg:flex flex-col items-center gap-6 absolute left-0 top-2 bottom-2">
+          <span class="vertical text-[11px] tracking-[0.18em] text-soft uppercase font-medium">Sonam Dolker</span>
+          <span class="w-px flex-1 bg-line"></span>
+          <span class="vertical text-[11px] tracking-[0.18em] text-gblue font-medium">2026</span>
         </div>
 
-        <div class="home-img">
-            <img src="images/pfp.png" alt="">
-        </div>
-    </section>
+        <div class="lg:pl-16">
 
-    <section class="education" id="education">
-        <h2 class="heading">Education</h2>
-        <div class="timeline-items">
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2023-2027</div>
-                <div class="timeline-content">
-                    <h3>Under Graduation</h3>
-                    <p>
-                    <p>
-                        I'm pursuing a Bachelor's degree in Computer Science at <strong>IIIT Bhopal</strong>, focusing
-                        on Software Development. Some of the key courses I've completed include Data Structures,
-                        Algorithms, and OOPS.
-                    </p>
-                    </p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2021-2023</div>
-                <div class="timeline-content">
-                    <h3>Higher Secondary</h3>
-                    <p>
-                        I completed my higher secondary at <strong>Kendriya Vidyalaya Leh, Ladakh</strong>.
-                    </p>
-                    <ul>
-                        <li>Graduated with distinction in Physics, Chemistry, Mathematics and Computer Science.</li>
-                        <li>Secured 90.4% in CBSE 2023 boards.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2021-2008</div>
-                <div class="timeline-content">
-                    <h3>High School</h3>
-                    <p>
-                        I completed my high school at <strong>Ladakh Rigjung Public School</strong>, where I developed a
-                        strong interest in science and technology, particularly in computer science.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="project" id="project">
-        <h2 class="heading">Projects</h2>
-        <div class="project-container">
-            <div class="project-box">
-                <img src="images/img1.png" alt="">
-                <div class="project-layer">
-                    <h4>WeatherWeb</h4>
-                    <p> </p>
-                    <div class="project-link">
-                        <a href="https://dolkersonam.github.io/WeatherWeb/"><i
-                                class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        <a href="https://github.com/dolkersonam/WeatherWeb.git"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-box">
-                <img src="images/img2.png" alt="">
-                <div class="project-layer">
-                    <h4>Doer</h4>
-                    <p> </p>
-                    <div class="project-link">
-                        <a href="https://dolkersonam.github.io/Doer/"><i
-                                class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        <a href="https://github.com/dolkersonam/Doer.git"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-box">
-                <img src="images/img3.png" alt="">
-                <div class="project-layer">
-                    <h4>Netflix Clone</h4>
-                    <p> </p>
-                    <div class="project-link">
-                        <a href=""><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        <a href=""><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-box">
-                <img src="images/img4.png" alt="">
-                <div class="project-layer">
-                    <h4>NewsXpress</h4>
-                    <p> </p>
-                    <div class="project-link">
-                        <a ><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        <a href="https://github.com/dolkersonam/NewsXpress.git"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-box">
-                <img src="images/img5.png" alt="">
-                <div class="project-layer">
-                    <h4>Texutils</h4>
-                    <p> </p>
-                    <div class="project-link">
-                        <a ><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        <a href="https://github.com/dolkersonam/textUtils.git"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="project-box">
-                <img src="images/img6.png" alt="">
-                <div class="project-layer">
-                    <h4>Calculator</h4>
-                    <p></p>
-                    <div class="project-link">
-                        <a href="https://dolkersonam.github.io/Calculator/"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                        <a href="https://github.com/dolkersonam/Calculator.git"><i class="fa-brands fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-    </section>
-    <section class="contact" id="contact">
-        <h2 class="heading">Contact <span>Me</span></h2>
-        <form action="">
-            <div class="input-group">
-                <div class="input-box">
-                    <input type="text" placeholder="Full Name">
-                    <input type="email" placeholder="Email">
-                </div>
-                <div class="input-box">
-                    <input type="number" placeholder="Phone Number">
-                    <input type="text" placeholder="Subject">
-                </div>
-            </div>
-            <div class="input-group-2">
-                <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-                <input type="submit" value="Send Message" class="btn">
-            </div>
+          <!-- headline -->
+          <h1 class="font-display font-black leading-[0.85] tracking-[-0.03em] text-[24vw] sm:text-[19vw] lg:text-[13rem] reveal">
+            Hello
+          </h1>
 
-        </form>
-    </section>
-    <footer class="footer">
-        <div class="social">
-            <a href="https://www.linkedin.com/in/sonam-dolker-135504271/"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://github.com/dolkersonam"><i class="fa-brands fa-github"></i></a>
+          <div class="mt-6 flex items-center gap-3 reveal">
+            <span class="dotmark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <p class="text-xl text-soft">I'm Sonam Dolker </p>
+          </div>
+
+          <a href="#about" class="inline-flex items-center gap-2 mt-14 text-[12px] text-gblue font-medium hover:text-gblueDark transition-colors reveal">
+            Scroll down <span class="animate-bounce">↓</span>
+          </a>
         </div>
-        <ul class="list">
-            <li><a >FAQ</a></li>
-            <li><a href="#home">About Me</a></li>
-            <li><a href="#project">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <p class="copyright">
-            © Sonam Dolker | All Rights Reserved
+      </div>
+
+      <!-- portrait -->
+      <div class="hidden sm:block relative reveal">
+        <img src="/assets/img.png"
+             alt="Portrait" class="w-full h-[340px] sm:h-[460px] lg:h-[520px] object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="px-5 sm:px-8 lg:px-12 py-20 lg:py-28 bg-panel">
+    <div class="grid lg:grid-cols-[1fr_320px_1fr] gap-10 lg:gap-12">
+
+      <!-- col 1 -->
+      <div class="reveal">
+        <h2 class="font-display text-2xl sm:text-3xl font-medium mb-5">About Me</h2>
+        <p class="text-base leading-relaxed text-soft max-w-[300px]">
+          I'm a final-year student at IIIT Bhopal who spends most of the week building websites people actually
+          use - journal platforms, a government admissions portal, a school site. I like the part where a
+          messy requirement turns into a page that loads fast and reads clearly.
         </p>
-    </footer>
 
-    <script src="script.js"></script>
+        <svg class="mt-16 w-40 text-gblue hidden lg:block" viewBox="0 0 160 70" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 66C22 26 70 4 140 12"/>
+          <path d="M126 4l16 8-11 12"/>
+        </svg>
+      </div>
+
+      <!-- col 2 : stat card -->
+      <div class="bg-white rounded-2xl elev-1 p-6 reveal">
+        <div class="w-9 h-9 rounded-full border-2 border-gblue grid place-items-center mb-8">
+          <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="#1A73E8" stroke-width="1.6">
+            <path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13 5l-2 14"/>
+          </svg>
+        </div>
+        <p class="font-display text-4xl font-medium"><span class="count text-gblue" data-target="6">0</span> sites</p>
+        <p class="text-[11px] text-soft mt-2 leading-relaxed">
+          Built and shipped to production across two internships and freelance work
+        </p>
+
+        <div class="media relative overflow-hidden mt-6 rounded-xl">
+          <img src="https://picsum.photos/seed/sonamdesk/600/600?grayscale" alt="Workspace"
+               class="w-full h-[190px] object-cover" />
+        </div>
+      </div>
+
+      <!-- col 3 -->
+      <div class="reveal">
+        <div class="media relative overflow-hidden w-[110px] h-[110px] ml-auto lg:ml-0 mb-10 rounded-2xl elev-1">
+          <img src="https://picsum.photos/seed/sonamface/300/300?grayscale" alt="Sonam Dolker" class="w-full h-full object-cover" />
+          <span class="badge absolute top-2 right-2 w-6 h-6 rounded-full bg-white grid place-items-center text-[11px] text-gblue">↗</span>
+        </div>
+
+        <h2 class="font-display text-2xl sm:text-3xl font-medium mb-5">More about me</h2>
+        <ul class="space-y-6">
+          <li class="flex gap-4">
+            <span class="shrink-0 w-6 h-6 rounded-full bg-gblue text-white grid place-items-center text-[13px] leading-none">+</span>
+            <p class="text-base leading-relaxed text-soft">
+              Completed my studies till 12th standard in Ladakh.
+            </p>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-6 h-6 rounded-full bg-gblue text-white grid place-items-center text-[13px] leading-none">+</span>
+            <p class="text-base leading-relaxed text-soft">
+              Six months of internship experience: WordPress development at NexaWebDeveloper, then full-stack
+              work at NIC Ladakh on a public admissions portal.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK STRIP (drag to scroll) ============ -->
+  <section id="work" class="py-4 bg-white">
+    <div id="strip" class="strip flex gap-4 overflow-x-auto px-5 sm:px-8 lg:px-12 snap-x snap-mandatory">
+
+      <article class="snap-center shrink-0 w-[68vw] sm:w-[380px]">
+        <a href="https://hme.ladakh.gov.in/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/hme1.png" alt="HME Ladakh admissions portal" class="w-full h-[240px] sm:h-[300px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>HME Ladakh admissions portal</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">NIC Ladakh</span>
+        </div>
+      </article>
+
+      <article class="snap-center shrink-0 w-[68vw] sm:w-[380px]">
+        <a href="https://www.researchfloor.org/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/researchfloor1.png" alt="Research Floor publishing platform" class="w-full h-[240px] sm:h-[300px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>Research Floor</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">NexaWebDeveloper</span>
+        </div>
+      </article>
+
+      <article class="snap-center shrink-0 w-[68vw] sm:w-[380px]">
+        <a href="https://isripress.com/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/isripress1.png" alt="ISRI Press" class="w-full h-[240px] sm:h-[300px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>ISRI Press</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">NexaWebDeveloper</span>
+        </div>
+      </article>
+
+      <article class="snap-center shrink-0 w-[68vw] sm:w-[380px]">
+        <a href="https://rigjungschool.com/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/rigjung1.png" alt="Rigjung School website" class="w-full h-[240px] sm:h-[300px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>Rigjung School</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">Freelance</span>
+        </div>
+      </article>
+
+      <article class="snap-center shrink-0 w-[68vw] sm:w-[380px]">
+        <a href="https://jullayjourneys.com/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/jullay1.png" alt="Jullay Journeys" class="w-full h-[240px] sm:h-[300px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>Jullay Journeys</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">NexaWebDeveloper</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
+
+    <div class="grid lg:grid-cols-2 gap-10 mb-16">
+      <div class="reveal">
+        <p class="flex items-center gap-2 text-[12px] text-soft mb-4 font-medium">
+          <span class="dotmark" aria-hidden="true"><span></span><span></span><span></span><span></span></span> Experience
+        </p>
+        <h2 class="font-display text-3xl sm:text-4xl font-medium leading-tight max-w-[320px]">
+          Where I've Been Building
+        </h2>
+      </div>
+
+      <div class="reveal lg:pt-8">
+        <p class="text-[13px] leading-relaxed text-soft max-w-[380px]">
+          Six months across two internships and a freelance build — WordPress and PHP for academic publishing,
+          full-stack work on a government admissions portal, and a school site start to finish.
+        </p>
+        <a href="#contact" class="btn-fill mt-6">
+          Get in touch <span class="text-[11px]">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- rows -->
+    <div id="expList" class="divide-y divide-line border-t border-line">
+
+      <!-- NIC Ladakh -->
+      <div class="exp open reveal">
+        <button class="exp-head w-full text-left grid md:grid-cols-[1.1fr_1.2fr_auto] gap-4 md:gap-8 items-start py-6" aria-expanded="true">
+          <div>
+            <h3 class="text-[15px] font-medium">NIC Ladakh, Full Stack Developer</h3>
+            <p class="flex items-center gap-2 text-[11px] text-soft mt-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-gblue"></span> May 2026 – July 2026 · 2 months
+            </p>
+          </div>
+          <p class="text-[12px] leading-relaxed text-soft">
+            Built the MBBS/BDS and paramedical admissions portal for the HME Department, UT Ladakh.
+          </p>
+          <div class="flex gap-2 flex-wrap">
+            <span class="chip px-3 py-1 rounded-full bg-panel text-[11px]"><span class="dot bg-gblue"></span>PHP</span>
+            <span class="chip px-3 py-1 rounded-full bg-panel text-[11px]"><span class="dot bg-ggreen"></span>MySQL</span>
+          </div>
+        </button>
+        <div class="exp-body"><div class="pb-8 grid md:grid-cols-[1fr_320px] gap-6 items-center">
+          <div class="grid grid-cols-3 gap-3">
+            <img src="/assets/hme1.png" alt="Portal screen" class="w-full h-[100px] object-cover rounded-lg" />
+            <img src="/assets/hme2.png" alt="Portal screen" class="w-full h-[100px] object-cover rounded-lg" />
+            <img src="/assets/hme3.png" alt="Portal screen" class="w-full h-[100px] object-cover rounded-lg" />
+          </div>
+          <div class="flex items-center gap-6">
+            <p class="text-[12px] leading-relaxed text-soft">
+              Applicant-facing forms plus an admin panel to open and close each form window, backed by PHP and
+              MySQLi. Front end in vanilla JavaScript with a Ladakh-themed visual design.
+            </p>
+            <a href="https://hme.ladakh.gov.in/" target="_blank" rel="noopener" class="shrink-0 w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm" aria-label="Visit hme.ladakh.gov.in">↗</a>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- NexaWebDeveloper -->
+      <div class="exp reveal">
+        <button class="exp-head w-full text-left grid md:grid-cols-[1.1fr_1.2fr_auto] gap-4 md:gap-8 items-start py-6" aria-expanded="false">
+          <div>
+            <h3 class="text-[15px] font-medium">NexaWebDeveloper, WordPress Developer</h3>
+            <p class="flex items-center gap-2 text-[11px] text-soft mt-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-gred"></span> December 2025 – April 2026 · 4 months
+            </p>
+          </div>
+          <p class="text-[12px] leading-relaxed text-soft">
+            Four production sites for academic publishing and travel clients.
+          </p>
+          <div class="flex gap-2 flex-wrap">
+            <span class="chip px-3 py-1 rounded-full bg-panel text-[11px]"><span class="dot bg-gyellow"></span>WordPress</span>
+            <span class="chip px-3 py-1 rounded-full bg-panel text-[11px]"><span class="dot bg-gblue"></span>PHP</span>
+          </div>
+        </button>
+        <div class="exp-body"><div class="pb-8 space-y-5">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <a href="https://jullayjourneys.com/" target="_blank" rel="noopener" class="media block overflow-hidden relative rounded-lg">
+              <img src="https://picsum.photos/seed/jullay/400/300?grayscale" alt="Jullay Journeys" class="w-full h-[100px] object-cover" />
+            </a>
+            <a href="https://isripress.com/" target="_blank" rel="noopener" class="media block overflow-hidden relative rounded-lg">
+              <img src="https://picsum.photos/seed/isripress/400/300?grayscale" alt="ISRI Press" class="w-full h-[100px] object-cover" />
+            </a>
+            <a href="https://www.researchfloor.org/" target="_blank" rel="noopener" class="media block overflow-hidden relative rounded-lg">
+              <img src="https://picsum.photos/seed/researchfloor/400/300?grayscale" alt="Research Floor" class="w-full h-[100px] object-cover" />
+            </a>
+            <a href="https://chemjournal.researchfloor.org/" target="_blank" rel="noopener" class="media block overflow-hidden relative rounded-lg">
+              <img src="https://picsum.photos/seed/chemjournal/400/300?grayscale" alt="Chem Journal" class="w-full h-[100px] object-cover" />
+            </a>
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div class="text-[12px] leading-relaxed text-soft space-y-1">
+              <p>Custom archive templates, ACF-driven layouts, and theme overrides on top of Astra and Elementor.</p>
+              <p class="flex flex-wrap gap-x-4 gap-y-1 pt-2 text-gblue font-medium">
+                <a href="https://isripress.com/" target="_blank" rel="noopener" class="border-b border-transparent hover:border-gblue transition-colors">isripress.com</a>
+                <a href="https://www.researchfloor.org/" target="_blank" rel="noopener" class="border-b border-transparent hover:border-gblue transition-colors">researchfloor.org</a>
+                <a href="https://chemjournal.researchfloor.org/" target="_blank" rel="noopener" class="border-b border-transparent hover:border-gblue transition-colors">chemjournal.researchfloor.org</a>
+                <a href="https://jullayjourneys.com/" target="_blank" rel="noopener" class="border-b border-transparent hover:border-gblue transition-colors">jullayjourneys.com</a>
+              </p>
+            </div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Freelance -->
+      <div class="exp reveal">
+        <button class="exp-head w-full text-left grid md:grid-cols-[1.1fr_1.2fr_auto] gap-4 md:gap-8 items-start py-6" aria-expanded="false">
+          <div>
+            <h3 class="text-[15px] font-medium">Freelance, Web Developer</h3>
+            <p class="flex items-center gap-2 text-[11px] text-soft mt-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-ggreen"></span> Independent projects
+            </p>
+          </div>
+          <p class="text-[12px] leading-relaxed text-soft">
+            Designed and built rigjungschool.com end to end for a school in Ladakh.
+          </p>
+          <div class="flex gap-2 flex-wrap">
+            <span class="chip px-3 py-1 rounded-full bg-panel text-[11px]"><span class="dot bg-ggreen"></span>Frontend</span>
+            <span class="chip px-3 py-1 rounded-full bg-panel text-[11px]"><span class="dot bg-gred"></span>CMS</span>
+          </div>
+        </button>
+        <div class="exp-body"><div class="pb-8 grid md:grid-cols-[1fr_320px] gap-6 items-center">
+          <div class="grid grid-cols-3 gap-3">
+            <img src="/assets/rigjung1.png" alt="School site screen" class="w-full h-[100px] object-cover rounded-lg" />
+            <img src="/assets/rigjung2.png" alt="School site screen" class="w-full h-[100px] object-cover rounded-lg" />
+            <img src="/assets/rigjung3.png" alt="School site screen" class="w-full h-[100px] object-cover rounded-lg" />
+          </div>
+          <div class="flex items-center gap-6">
+            <p class="text-[12px] leading-relaxed text-soft">
+              Full build from layout to launch — admissions info, galleries, and a content structure the staff
+              can update themselves.
+            </p>
+            <a href="https://rigjungschool.com/" target="_blank" rel="noopener" class="shrink-0 w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm" aria-label="Visit rigjungschool.com">↗</a>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ STACK BANNER ============ -->
+  <section id="stack" class="px-5 sm:px-8 lg:px-12 pb-20">
+    <div class="relative overflow-hidden rounded-2xl elev-2 reveal">
+      <img src="https://picsum.photos/seed/sonambanner/1600/700?grayscale" alt=""
+           class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-br from-[#1A73E8]/90 via-[#202124]/85 to-[#34A853]/80"></div>
+
+      <div class="relative text-center text-white px-6 py-16 sm:py-20 max-w-[640px] mx-auto">
+        <p class="text-[11px] text-white/70 mb-4 font-mono">(What I build with)</p>
+        <h2 class="font-display text-2xl sm:text-[32px] font-medium leading-snug">
+          Tech Stack
+        </h2>
+        <ul class="flex flex-wrap justify-center gap-2 mt-7">
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#4285F4]"></span>HTML</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#EA4335]"></span>CSS</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#FBBC04]"></span>JavaScript</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#34A853]"></span>React</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#4285F4]"></span>Node.js</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#EA4335]"></span>Express.js</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#FBBC04]"></span>PHP</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#34A853]"></span>SQL</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#4285F4]"></span>MongoDB</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#EA4335]"></span>Wordpress</li>
+          <li class="chip px-3.5 py-1.5 rounded-full bg-white/15 text-[12px]"><span class="dot bg-[#FBBC04]"></span>Tailwind CSS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SELECTED WORK ============ -->
+  <section class="px-5 sm:px-8 lg:px-12 py-20 lg:py-24 bg-panel">
+    <div class="text-center mb-12 reveal">
+      <p class="flex items-center justify-center gap-2 text-[12px] text-soft mb-3 font-medium">
+        <span class="dotmark" aria-hidden="true"><span></span><span></span><span></span><span></span></span> Portfolio
+      </p>
+      <h2 class="font-display text-3xl sm:text-4xl font-medium">Selected Work</h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <article class="reveal">
+        <a href="https://hme.ladakh.gov.in/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/hme1.png" alt="HME Ladakh portal" class="w-full h-[210px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[10px]">
+            <span class="px-2.5 py-1 rounded-full bg-white/95 text-gblue font-medium">Full stack</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/95">hme.ladakh.gov.in</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>Admissions portal, UT Ladakh</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">NIC Ladakh</span>
+        </div>
+      </article>
+
+      <article class="reveal">
+        <a href="jullayjourneys.com" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/jullay1.png" alt="Chem Journal" class="w-full h-[210px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[10px]">
+            <span class="px-2.5 py-1 rounded-full bg-white/95 text-gred font-medium">WordPress</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/95">jullayjourneys.com</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>Jullay Journeys</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">Freelance</span>
+        </div>
+      </article>
+
+      <article class="reveal">
+        <a href="https://rigjungschool.com/" target="_blank" rel="noopener" class="media relative overflow-hidden block group rounded-2xl elev-1">
+          <img src="/assets/rigjung1.png" alt="Rigjung School" class="w-full h-[210px] object-cover" />
+          <span class="badge absolute inset-0 grid place-items-center opacity-0 group-hover:opacity-100">
+            <span class="w-11 h-11 rounded-full bg-gblue text-white grid place-items-center text-sm">↗</span>
+          </span>
+          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[10px]">
+            <span class="px-2.5 py-1 rounded-full bg-white/95 text-ggreen font-medium">Full Stack</span>
+            <span class="px-2.5 py-1 rounded-full bg-white/95">rigjungschool.com</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-2 mt-3 text-[13px]">
+          <span>Rigjung School</span>
+          <span class="text-soft text-[11px]">For</span>
+          <span class="text-[11px] font-medium text-gblue">Freelance</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ CLOSING CTA ============ -->
+  <section id="contact" class="px-5 sm:px-8 lg:px-12 py-24 text-center">
+    <span class="dotmark mx-auto mb-6" aria-hidden="true" style="width:fit-content"><span></span><span></span><span></span><span></span></span>
+    <h2 class="font-display text-3xl sm:text-[40px] font-medium reveal">Got a project? Let's build it.</h2>
+    <p class="text-[13px] text-soft mt-5 max-w-[420px] mx-auto leading-relaxed reveal">
+      I'm open to internships, freelance builds, and full-time roles starting 2026. Send over what you have in
+      mind and I'll get back to you.
+    </p>
+    <a href="mailto:sonamdolker15@gmail.com" class="btn-fill mt-8 reveal">
+      Get in touch <span class="text-[11px]">↗</span>
+    </a>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-ink text-white px-5 sm:px-8 lg:px-12 py-10">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <ul class="flex flex-wrap gap-6 text-[12px] text-white/70">
+        <li><a href="#top" class="hover:text-white transition-colors">Home</a></li>
+        <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
+        <li><a href="#work" class="hover:text-white transition-colors">Work</a></li>
+        <li><a href="#experience" class="hover:text-white transition-colors">Experience</a></li>
+        <li><a href="#stack" class="hover:text-white transition-colors">Stack</a></li>
+      </ul>
+      <a href="mailto:hello@sonamdolker.dev" class="font-display text-2xl sm:text-3xl font-light hover:text-[#4285F4] transition-colors">
+        sonamdolker15@gmail.com
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ---------- mobile menu ---------- */
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('hidden') === false;
+  menuBtn.setAttribute('aria-expanded', String(open));
+});
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => mobileMenu.classList.add('hidden'))
+);
+
+/* ---------- scroll reveal ---------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 70 + 'ms';
+  io.observe(el);
+});
+
+/* ---------- animated counters ---------- */
+function runCount(el) {
+  const target = +el.dataset.target;
+  const dur = 1400;
+  const start = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);         // easeOutCubic
+    el.textContent = Math.round(target * eased);
+    if (p < 1) requestAnimationFrame(tick);
+  })(start);
+}
+const countIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { runCount(e.target); countIO.unobserve(e.target); }
+  });
+}, { threshold: 0.6 });
+document.querySelectorAll('.count').forEach(el => countIO.observe(el));
+
+/* ---------- drag-to-scroll work strip ---------- */
+const strip = document.getElementById('strip');
+let down = false, startX = 0, startScroll = 0, moved = 0;
+
+strip.addEventListener('pointerdown', (e) => {
+  down = true; moved = 0;
+  startX = e.clientX;
+  startScroll = strip.scrollLeft;
+  strip.setPointerCapture(e.pointerId);
+});
+strip.addEventListener('pointermove', (e) => {
+  if (!down) return;
+  const dx = e.clientX - startX;
+  if (Math.abs(dx) > 4) strip.classList.add('dragging');
+  moved = Math.abs(dx);
+  strip.scrollLeft = startScroll - dx;
+});
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+  strip.addEventListener(ev, () => { down = false; strip.classList.remove('dragging'); })
+);
+strip.addEventListener('click', (e) => { if (moved > 6) e.preventDefault(); }, true);
+
+/* ---------- experience accordion ---------- */
+document.querySelectorAll('.exp-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const row = head.closest('.exp');
+    const isOpen = row.classList.contains('open');
+    document.querySelectorAll('.exp').forEach(r => {
+      r.classList.remove('open');
+      r.querySelector('.exp-head').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      row.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+</script>
 </body>
-
 </html>
